@@ -8,8 +8,14 @@
 
 (println "Cleanliness is next to goldiness")
 
-(defn train 
+(defn train
+  "blow the whistle"
   []
-  (println "Choo choo!"))
+  (println "Choo choo vroom kaboom!"))
 
-(map)
+
+; (map)
+
+(+ 1 (* 2 3) 4)
+
+(train)
