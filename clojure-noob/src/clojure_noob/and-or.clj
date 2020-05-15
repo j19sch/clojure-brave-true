@@ -20,6 +20,34 @@
 (and :feelin_super_cool nil false)
 ; => nil
 
+(defn cond1 [inp] (if (< inp 5) "yep"))
+(defn cond2 [inp] (if (integer? inp) true false))
+
+(or (cond1 3) (cond2 7))
+; => yep
+(or (cond1 7) (cond2 7))
+; => true
+(or (cond1 7) (cond2 "seven"))
+; => false
+
+(defn is_int [inp] (if (integer? inp) true nil))
+(defn mult2 [input] (* input 2))
+(defn mult2_if_int [input] (and (is_int input) (mult2 input)))
+
+(mult2_if_int 4)
+; => 8
+(mult2_if_int "four")
+; => nil
+
+(defn mult3_if_int [input] (if (integer? input) (* input 3) nil))
+(mult3_if_int 4)
+; => 12
+(mult3_if_int "four")
+; => nil
+
+;; questions
+; Why not use the if version? For switch-like forms?
+; Why change string to nil?
 
 ;; my stuff
 ; and last value is first falsy
