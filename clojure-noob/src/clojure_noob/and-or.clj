@@ -30,20 +30,40 @@
 (or (cond1 7) (cond2 "seven"))
 ; => false
 
-(defn is_int [inp] (if (integer? inp) true nil))
-(defn mult2 [input] (* input 2))
-(defn mult2_if_int [input] (and (is_int input) (mult2 input)))
+; (defn is_int [inp] (if (integer? inp) true nil))
+; (defn mult2 [input] (* input 2))
+; (defn mult2_if_int [input] (and (is_int input) (mult2 input)))
+(defn mult2_if_int [input] (and (if (integer? input) true) (* input 2)))
+; (defn mult2_if_int [input] (if (integer? input) true) (* input 2))
 
 (mult2_if_int 4)
 ; => 8
 (mult2_if_int "four")
 ; => nil
 
-(defn mult3_if_int [input] (if (integer? input) (* input 3) nil))
+(defn mult3_if_int [input] (if (integer? input) (* input 3)))
 (mult3_if_int 4)
 ; => 12
 (mult3_if_int "four")
 ; => nil
+
+(defn mult4_if_int [input] (cond
+                             (integer? input) (* input 4)
+                             :else nil))
+(mult4_if_int 2) ; => 8
+(mult4_if_int "two") ; => nil
+
+; same thing as and but with or
+; (or nil "crazy default value")
+(or (mult2_if_int 4) "that was not a number")
+(or (mult2_if_int "four") "that was not a number")
+
+(nil? "")
+(false? "")
+(true? "")
+(true? "a")
+(if "" "yes" "no")
+(not "foo")  ; => false
 
 ;; questions
 ; Why not use the if version? For switch-like forms?
@@ -51,26 +71,26 @@
 
 ;; my stuff
 ; and last value is first falsy
-(and true true false)
-; => false
-(and true true nil)
-; => nil
-(and true true true)
+(and true true)
 ; => true
-(and true true :tree)
+(and true :tree)
 ; => :tree
+(and true false)
+; => false
+(and true nil)
+; => nil
 (and)
 ; => true
 
 ; or last value is frist truthy
-(or false false true)
+(or false true)
 ; => true
+(or false false :falcon)
+; => :falcon
 (or false false false)
 ; => false
 (or false false nil)
 ; => nil
-(or false false :falcon)
-; => :falcon
 (or)
 ; => nil
 
