@@ -29,7 +29,8 @@
 
 (when true
   (println "First do!")
-  "By Odin's Elbow!"
+  (println "Second do!")
+  "By Odin's Elbowz!"
   )
 ; => "First do!"
 ; => "By Odin's Elbow!"
