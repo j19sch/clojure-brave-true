@@ -63,6 +63,14 @@
 ; [1 2 3]
 (into [9 8] [1 2 3] )
 ; [9 8 1 2 3]
+(conj [9 8] [1 2 3] )
+; [9 8 [1 2 3]]
+(into [1 2 3] [])
+; [1 2 3]
+(into [{:name "my-arm"}] [{:name "left-head"} {:name "right-head"}])
+; [{:name "my-arm"} {:name "left-head"} {:name "right-head"}]
+(conj [{:name "my-arm"}] [{:name "left-head"} {:name "right-head"}])
+; [{:name "my-arm"} [{:name "left-head"} {:name "right-head"}]]
 
 (better-symmetrize-body-parts asym-hobbit-body-parts)
 
@@ -89,36 +97,55 @@
     (if (empty? the-stuffs)
       the-stuffs-inc
       (let [[the-stuff & the-stuffz] the-stuffs]
-        (recur the-stuffz (into the-stuffs-inc (+ 1 the-stuff)))))))
+        (recur the-stuffz (conj the-stuffs-inc (+ 1 the-stuff)))))))  ; had into instead of conj,does not work
+
+(defn other-looper
+  [stuffs]
+  (loop [the-stuffs stuffs
+         the-stuffs-inc []]
+    (if (empty? the-stuffs)
+      the-stuffs-inc
+      (let [[the-stuff & the-stuffz] the-stuffs]
+        (recur the-stuffz (conj the-stuffs-inc the-stuff ))))))
+
+(other-looper [])  ; []]
+(other-looper [1 2 3])  ; [1 2 3]
+(other-looper [{:value 1} {:value 2} {:value 3}])  ; [{:value 1} {:value 2} {:value 3}]
 
 (looper [])  ; => []
 (looper [1 2 3])
-; Don't know how to create ISeq
+; Don't know how to create ISeq -> fixed!
+(looper [[1] [2] [3]])
+; ClassCastException class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app';
+;  java.lang.Number is in module java.base of loader 'bootstrap')  clojure.l ang.Numbers.add (Numbers.java:128)
 (looper 1 2 3)
 ; ArityException Wrong number of args (3) passed to: core/looper
 (def the-input [1 2 3])
 (looper the-input)
-; Don't know how to create ISeq
+; Don't know how to create ISeq -> fixed
 
-(defn not-looper
+
+(defn set-looper
   [stuffs]
-   (loop [[the-stuff & the-stuffs] stuffs
-          the-stuffs-inc []]
-     (if (empty? the-stuffs)
-       the-stuffs-inc
-       (recur the-stuffs (into the-stuffs-inc (+ 1 the-stuff))))))
-
-(not-looper [1 2 3])
-; Don't know how to create ISeq
-; So need different solution
-
+  (loop [the-stuffs stuffs
+         the-stuffs-inc []]
+    (if (empty? the-stuffs)
+      the-stuffs-inc
+      (let [[the-stuff & the-stuffz] the-stuffs]
+        (recur the-stuffz (into the-stuffs-inc [(+ 1 the-stuff)]))))))  ; had into instead of conj,does not work
+(set-looper [])
+; []
+(set-looper [1 2 3])
+; [2 3 4]
+(conj [1] [2])  ; [1 [2]]
+(conj [1] 2)  ; [1 2]
+(into [1] [2]) ; [1 2]
+(into [1] 2); IllegalArgumentException Don't know how to create ISeq from: java.lang.Long  clojure.lang.RT.seqFrom (RT.java:542)
 
 (defn looper1
   [the-stuff & the-stuffs]
   (str the-stuff, "then", the-stuffs))
 
-(looper [1 2 3])
-; Don't know how to create ISeq
 (looper1 [1 2 3] 4 5)
 ; "[1 2 3]then(4 5)"
 (looper1 1 2 3)
