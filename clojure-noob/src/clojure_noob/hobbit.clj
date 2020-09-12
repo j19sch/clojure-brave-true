@@ -90,6 +90,21 @@
 
 (hit asym-hobbit-body-parts)
 
+(defn target-hit
+  [asym-body-parts target]
+  (let [sym-parts (better-symmetrize-body-parts asym-body-parts)]
+        (loop [[part & remaining] sym-parts
+               accumulated-size (:size part)]
+          (if (> accumulated-size target)
+            part
+            (recur remaining (+ accumulated-size (:size (first remaining))))))))
+
+(hit asym-hobbit-body-parts 0)  ; head
+(hit asym-hobbit-body-parts 2)  ; head
+(hit asym-hobbit-body-parts 3)  ; left-eye
+(hit asym-hobbit-body-parts 84) ; left-foot, note: right before left in this script
+(hit asym-hobbit-body-parts 85) ; NullPointerException
+
 (defn looper
   [stuffs]
   (loop [the-stuffs stuffs
