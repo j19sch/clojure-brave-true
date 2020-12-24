@@ -43,6 +43,9 @@
                    (into final-body-parts
                          (set [part (matching-part part)])))))))
 
+(into [1 2] (set [3 3]))
+; => [1 2 3]
+
 (symmetrize-body-parts asym-hobbit-body-parts)
 
 ; (re-find #"^left-" "left-eye")
@@ -60,17 +63,25 @@
                asym-body-parts))
 
 (into [] [1 2 3] )
-; [1 2 3]
+; => [1 2 3]
+(conj [] [1 2 3] )
+; => [[1 2 3]]
 (into [9 8] [1 2 3] )
-; [9 8 1 2 3]
+; => [9 8 1 2 3]
 (conj [9 8] [1 2 3] )
-; [9 8 [1 2 3]]
+; => [9 8 [1 2 3]]
 (into [1 2 3] [])
-; [1 2 3]
+; => [1 2 3]
+(conj [1 2 3] [])
+; => [1 2 3 []]
+(into [1 2 3] 4)
+; IllegalArgumentException Don't know how to create ISeq from: java.lang.Long  clojure.lang.RT.seqFrom (RT.java:542)
+(conj [1 2 3] 4)
+; [1 2 3 4]
 (into [{:name "my-arm"}] [{:name "left-head"} {:name "right-head"}])
-; [{:name "my-arm"} {:name "left-head"} {:name "right-head"}]
+; => [{:name "my-arm"} {:name "left-head"} {:name "right-head"}]
 (conj [{:name "my-arm"}] [{:name "left-head"} {:name "right-head"}])
-; [{:name "my-arm"} [{:name "left-head"} {:name "right-head"}]]
+; => [{:name "my-arm"} [{:name "left-head"} {:name "right-head"}]]
 
 (better-symmetrize-body-parts asym-hobbit-body-parts)
 
@@ -152,10 +163,15 @@
 ; []
 (set-looper [1 2 3])
 ; [2 3 4]
-(conj [1] [2])  ; [1 [2]]
-(conj [1] 2)  ; [1 2]
-(into [1] [2]) ; [1 2]
-(into [1] 2); IllegalArgumentException Don't know how to create ISeq from: java.lang.Long  clojure.lang.RT.seqFrom (RT.java:542)
+
+(conj [1] [2])
+; => [1 [2]]
+(conj [1] 2)
+; => [1 2]
+(into [1] [2])
+; => [1 2]
+(into [1] 2)
+; IllegalArgumentException Don't know how to create ISeq from: java.lang.Long  clojure.lang.RT.seqFrom (RT.java:542)
 
 (defn looper1
   [the-stuff & the-stuffs]
