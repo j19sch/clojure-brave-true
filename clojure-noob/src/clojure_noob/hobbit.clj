@@ -99,11 +99,11 @@
             part
             (recur remaining (+ accumulated-size (:size (first remaining))))))))
 
-(hit asym-hobbit-body-parts 0)  ; head
-(hit asym-hobbit-body-parts 2)  ; head
-(hit asym-hobbit-body-parts 3)  ; left-eye
-(hit asym-hobbit-body-parts 84) ; left-foot, note: right before left in this script
-(hit asym-hobbit-body-parts 85) ; NullPointerException
+(target-hit asym-hobbit-body-parts 0)  ; head
+(target-hit asym-hobbit-body-parts 2)  ; head
+(target-hit asym-hobbit-body-parts 3)  ; left-eye
+(target-hit asym-hobbit-body-parts 84) ; left-foot, note: right before left in this script
+(target-hit asym-hobbit-body-parts 85) ; NullPointerException
 
 (defn looper
   [stuffs]
