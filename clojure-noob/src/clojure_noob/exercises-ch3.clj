@@ -23,6 +23,8 @@
 ; => "1[2 3]"
 (str 1 (2 3))
 ; ClassCastException class java.lang.Long cannot be cast to class clojure.lang.IFn (java.lang.Long is in module java.base of loader 'bootstrap'; clojure.lang.IFn is in unnamed module of loader 'app')  clojure-noob.core/eval1442 (form-init 9121953781140959953.clj:21)
+(str 1 '(2 3))
+; => "1(2 3)"
 (str 1 {:2 "three"})
 ; => "1{:2 \"three\"}"
 (str 1 {:2 3})
@@ -38,6 +40,8 @@
 ; => [1 [2 3]]
 (vector 1 (2 3))
 ; ClassCastException class java.lang.Long cannot be cast to class clojure.lang.IFn 
+(vector 1 '(2 3))
+; => [1 (2 3)]
 (vector 1 {:2 3})
 ; => [1 {:2 3}]
 
@@ -51,6 +55,8 @@
 ; => (1 [2 3])
 (list 1 (2 3))
 ; ClassCastException class java.lang.Long cannot be cast to class clojure.lang.IFn
+(list 1 '(2 3))
+; => (1 (2 3))
 (list 1 {:2 3})
 ; => (1 {:2 3})
 
@@ -164,6 +170,8 @@ my-other-hash
   )
 (plus-100-arity-overloading)
 ; => 100
+(plus-100-arity-overloading 0)
+; => 100
 (plus-100-arity-overloading 1)
 ; => 101
 
@@ -177,12 +185,30 @@ my-other-hash
   [dec-by]
   #(- % dec-by))
 (def dec9 (dec-maker 9))
+(type dec9)
+; => clojure_noob.core$dec_maker$fn__1458
 (dec9 10)
+; => 1
+
+(type 10)
+; => java.lang.Long
+
+(def def-dec9 (fn [num] (- num 9)))
+; => #'clojure-noob.core/def-dec9
+(type def-dec9)
+; => clojure_noob.core$def_dec9
+(def-dec9 10)
 ; => 1
 
 ( #(+ 10 %1 %2) 20 30)
 ; => 60
 
+(- 10 1 2)
+; => 7
+(- 10 1 -2)
+; => 11
+(- 10 -1 2)
+; => 9
 
 ; Exercises 4-5-6 require use of functions not covered yet in the book
 
