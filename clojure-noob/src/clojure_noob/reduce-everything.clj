@@ -51,3 +51,13 @@
 ; => (2 3 4)
 (my-map dec [4 5 6])
 ; => (3 4 5)
+
+
+; filter as reduce: loop through input, add to output if condition is true?
+(def numbers [1 2 3 4 5])
+
+(filter #(< % 4) numbers)
+; => (1 2 3)
+
+(defn my-filter [func inp]
+  (reduce ))
