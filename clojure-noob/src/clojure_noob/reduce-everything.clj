@@ -132,6 +132,18 @@
 (red-func lt4 [1 2] 3)
 ;=> (1 2 3)
 
+(defn my-filter-3 [func inp]
+  (reduce
+    #(if func
+       (concat %1 [%2])
+       %1)
+    ()
+    inp
+    )
+  )
+
+(my-filter-3 #(< % 4) [1 2 3 4 5])
+;=> (1 2 3 4 5)
 
 (defn my-filter [func inp]
   (reduce (fn [vect numb]
