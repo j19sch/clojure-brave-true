@@ -20,6 +20,9 @@
 (map inc [1 2 3])
 ; => (2 3 4)
 
+(map dec [4 5 6])
+; => (3 4 5)
+
 (reduce + [1 2 3])
 ; => 6
 (reduce + 1 [2 3])
@@ -81,6 +84,9 @@
           inp
           )
   )
+
+(my-simple-filter [1 2 3 4 5])
+; => (1 2 3)
 
 (if (even? 5)
   "yes"
@@ -195,3 +201,16 @@
         [1 2 3 4 5])
 ;=> (1 2 3)
 ;=> to vector is easier than list: conj, no [] around numb, val []
+
+
+;=> some as reduce
+(some #(< % 5) [1 2 3 4 5])
+(some #(< % 5) [2 3 4 5])
+;=> true -> why true and not 1?
+(some #(> % 5) [1 2 3 4 5])
+;=> nil
+
+(reduce (fn [vect numb]
+          (if (< numb 5
+                 if not (empty? vect) )
+            )))

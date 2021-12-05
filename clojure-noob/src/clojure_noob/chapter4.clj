@@ -17,6 +17,26 @@
 (map str ["a"] [])
 ; => ()
 
+(map str [1 2 3])
+; => ("1" "2" "3")
+(map str [1 2 3] [4 5 6])
+; => ("14" "25" "36")
+
+(map str [1 2 3 4] [6 7 8])
+; => ("16" "27" "38")
+
+(map str [1 2 3] [6 7 8 9])
+; => ("16" "27" "38")
+
+(map (1 2 3) [str +])
+; => does not work
+
+(map #(str %) [1 2 3])
+; => ("1" "2" "3")
+
+(map #(% 1 2 3) [str +])
+; => ("123" 6)
+
 (str 1 2 3)
 ; => "123"
 (+ 1 2 3)
@@ -85,6 +105,14 @@
 (def my-map (assoc {} :key1 1 :key2 2))
 my-map
 ; => {:key 1, :key2 2}
+
+
+
+(take-while #(< % 6) (drop-while #(< % 2) [1 2 3 4 5 6 7]))
+; => (2 3 4 5)
+
+(drop-while #(< % 2) (take-while #(< % 6) [1 2 3 4 5 6 7]))
+; => (2 3 4 5)
 
 (def food-journal
   [{:month 1 :day 1 :human 5.3 :critter 2.3}
