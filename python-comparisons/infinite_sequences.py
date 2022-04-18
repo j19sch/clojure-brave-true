@@ -36,20 +36,46 @@ print(type(evens))  # generator
 
 top10 = itertools.islice(evens, 10)
 print(type(top10))  # itertools.islice
+print(list(top10))
 
 also = itertools.islice(even_numbers(), 10)
 
-# for _ in also:
-#   print(_)
+for _ in also:
+  print(_)
 
-# for _ in even_numbers():
-#   if _ > 18:
-#     break
-#   else:
-#     print(_)
+for _ in even_numbers():
+  if _ > 18:
+    break
+  else:
+    print(_)
 
 for index, number in enumerate(even_numbers()):
   if index > 10:
     break
   else:
     print(number)
+
+
+def more_even_numbers(numb=None):
+  numb = 0 if numb is None else numb
+  yield numb
+
+  numb = numb + 2
+  print(numb)
+  more_even_numbers(numb)
+
+more_evens = more_even_numbers()
+more_top10 = itertools.islice(more_evens, 10)
+print(type(more_top10))  # itertools.islice
+print(f"length {len(list(more_top10))}")
+
+for _ in more_top10:
+  print(_)  # returns only 0
+
+
+def moar_even_numbers(numb=None):
+  numb = 0 if numb is None else numb
+  yield moar_even_numbers(numb + 2)  # return will hit RecursionError: maximum recursion depth exceeded
+
+moar_10 = itertools.islice(moar_even_numbers(), 10)
+print(f"length {len(list(moar_10))}")
