@@ -66,7 +66,7 @@
 ; => ([:name "Edward Cullen"] [:glitter-index "10"])
 (assoc {} :name "Edward Cullen")
 ; => {:name "Edward Cullen"}
-(assoc {} [:name "Edward Cullen"])
+; (assoc {} [:name "Edward Cullen"])
 ; => Arity Exception
 (assoc {:name "Edward Cullen"} :glitter-index 3)
 ; => {:name "Edward Cullen", :glitter-index 3}
@@ -88,6 +88,14 @@
 (def unmapped-row ["Edward Cullen" "10"])
 (vector vamp-keys unmapped-row)
 ; => [[:name :glitter-index] ["Edward Cullen" "10"]]
+
+(def unmapped-row ["Edward Cullen" "10"])
+(reduce (fn [row-map [vamp-key value]]
+         (assoc row-map vamp-key (convert vamp-key value)))
+       {}
+       (map vector vamp-keys unmapped-row))
+; => {:name "Edward Cullen", :glitter-index 10}
+
 ; Exercises
 ; Exercise 1. Turn the result of your glitter filter into a list of names.
 ; Exercise 2. Write a function, append, which will append a new suspect to your list of suspects.
