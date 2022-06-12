@@ -18,12 +18,23 @@ vamp_keys = ["name", "glitter-index"]
 # print(output2)
 
 
-output = [
-	{
-		vamp_keys[0]: row[0],
-		vamp_keys[1]: int(row[1])
-	}
-	for row in rows
-]
+# output = [
+# 	{
+# 		vamp_keys[0]: row[0],
+# 		vamp_keys[1]: int(row[1])
+# 	}
+# 	for row in rows
+# ]
 
-print(output)
+# print(output)
+
+def mapify(rows):
+  return [
+    {
+      vamp_keys[0]: row[0],
+      vamp_keys[1]: int(row[1])
+    }
+    for row in rows
+  ]
+
+print(mapify(rows))
