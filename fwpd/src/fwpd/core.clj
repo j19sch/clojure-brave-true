@@ -82,6 +82,65 @@
 (glitter-filter 3 (mapify (parse (slurp filename))))
 ; => ({:name "Edward Cullen", :glitter-index 10} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6})
 
+(defn glitter-filter-ex1
+  [minimum-glitter records]
+  ; (map #(get % :name) (filter #(>= (:glitter-index %) minimum-glitter) records))
+  (map :name (filter #(>= (:glitter-index %) minimum-glitter) records))
+  )
+(glitter-filter-ex1 3 (mapify (parse (slurp filename))))
+; => ("Edward Cullen" "Jacob Black" "Carlisle Cullen")
+
+(get {:name "Edward", :glitter-index 10} :name)
+(map #(get % :name) [{:name "Edward", :glitter-index 10}])
+; => ("Edward")
+
+(mapify (parse (slurp filename)))
+
+(defn append
+  [name glitter-index]
+  (conj (mapify (parse (slurp filename))) {:name name :glitter-index glitter-index})
+  )
+(append "Bob" 5)
+; => ({:name "Bob", :glitter-index 5} {:name "Edward Cullen", :glitter-index 10} {:name "Bella Swan", :glitter-index 0} {:name "Charlie Swan", :glitter-index 0} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6})
+
+(defn append4
+  [name glitter-index]
+  (conj (vector (mapify (parse (slurp filename)))) {:name name :glitter-index glitter-index})
+  )
+(append4 "Bob" 5)
+; => [({:name "Edward Cullen", :glitter-index 10} {:name "Bella Swan", :glitter-index 0} {:name "Charlie Swan", :glitter-index 0} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6}) {:name "Bob", :glitter-index 5}]
+
+(defn append5
+  [name glitter-index]
+  (into (vector (mapify (parse (slurp filename)))) {:name name :glitter-index glitter-index})
+  )
+(append5 "Bob" 5)
+; => [({:name "Edward Cullen", :glitter-index 10} {:name "Bella Swan", :glitter-index 0} {:name "Charlie Swan", :glitter-index 0} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6}) [:name "Bob"] [:glitter-index 5]]
+
+(defn append2
+  [v-name glitter-index]
+  (concat (mapify (parse (slurp filename))) {:name v-name :glitter-index glitter-index}
+  ))
+(append2 "Bob" 5)
+; => ({:name "Edward Cullen", :glitter-index 10} {:name "Bella Swan", :glitter-index 0} {:name "Charlie Swan", :glitter-index 0} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6} [:name "Bob"] [:glitter-index 5])
+(defn append6
+  [v-name glitter-index]
+  (concat (mapify (parse (slurp filename))) [{:name v-name :glitter-index glitter-index}]
+  ))
+(append6 "Bob" 5)
+; => ({:name "Edward Cullen", :glitter-index 10} {:name "Bella Swan", :glitter-index 0} {:name "Charlie Swan", :glitter-index 0} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6} {:name "Bob", :glitter-index 5})
+
+(defn append3
+  [v-name glitter-index]
+  (into (mapify (parse (slurp filename))) {:name v-name :glitter-index glitter-index}
+  ))
+(append3 "Bob" 5)
+; => ([:glitter-index 5] [:name "Bob"] {:name "Edward Cullen", :glitter-index 10} {:name "Bella Swan", :glitter-index 0} {:name "Charlie Swan", :glitter-index 0} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6})
+
+(concat `(1 2) [3])
+; => (1 2 3)
+
+
 (parse (slurp filename))
 ; => (["Edward Cullen" "10"] ["Bella Swan" "0"] ["Charlie Swan" "0"] ["Jacob Black" "3"] ["Carlisle Cullen" "6"])
 
@@ -95,6 +154,39 @@
        {}
        (map vector vamp-keys unmapped-row))
 ; => {:name "Edward Cullen", :glitter-index 10}
+
+(def validationz {:name contains?
+                  :glitter-index contains?})
+
+
+(defn single-validate
+  [vamp-key value]
+  ((get validationz vamp-key) {vamp-key value} vamp-key))
+
+(single-validate :name "bob")
+; => true
+(single-validate :name "bob")
+; null pointer if false
+
+(seq {:name "bob" :glitter 5})
+; => ([:name "bob"] [:glitter 5])
+
+(defn append10
+  [record]
+  (conj (mapify (parse (slurp filename))) record)
+  )
+(append10 {:name "Bob" :glitter-index 5})
+; => ({:name "Bob", :glitter-index 5} {:name "Edward Cullen", :glitter-index 10} {:name "Bella Swan", :glitter-index 0} {:name "Charlie Swan", :glitter-index 0} {:name "Jacob Black", :glitter-index 3} {:name "Carlisle Cullen", :glitter-index 6})
+
+(defn validate
+  [validations record]
+  )
+(defn append-and-validate
+  [record]
+  (validate validationz record)
+  (conj (mapify (parse (slurp filenmae))) record)
+  )
+
 
 ; Exercises
 ; Exercise 1. Turn the result of your glitter filter into a list of names.
