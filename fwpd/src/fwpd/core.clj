@@ -171,6 +171,9 @@
 (seq {:name "bob" :glitter 5})
 ; => ([:name "bob"] [:glitter 5])
 
+(seq {:name contains? :glitter-index contains?})
+; => ([:name #object[clojure.core$contains_QMARK_ 0x16dcb0bb "clojure.core$contains_QMARK_@16dcb0bb"]] [:glitter-index #object[clojure.core$contains_QMARK_ 0x16dcb0bb "clojure.core$contains_QMARK_@16dcb0bb"]])
+
 (defn append10
   [record]
   (conj (mapify (parse (slurp filename))) record)
